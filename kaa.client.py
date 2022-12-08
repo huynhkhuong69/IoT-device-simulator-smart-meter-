@@ -46,8 +46,7 @@ class CommandsDto(object):
 
 """
 Kaa MQTT client that simplifies device communication with kaa platform.
-Check our tutorials about how to connect different devices:
-https://docs.kaaiot.io/KAA/docs/current/Tutorials/device-integration/hardware-guides/
+
 """
 class KaaClient(object):
     def __init__(self, host, port, application_version, token, client_id="fleet_sim"):
@@ -60,19 +59,14 @@ class KaaClient(object):
 
     """
     Adds command handler by specified command type.
-    For more information about command protocol see rfc document:
-    https://github.com/kaaproject/kaa-rfcs/blob/master/0011/README.md
-
-    Also check our tutorial about command execution:
-    https://docs.kaaiot.io/KAA/docs/current/Tutorials/getting-started/sending-commands-to-device/
+   
     """
     def add_command_handler(self, name, handler):
         self.client.message_callback_add(self._topic_command(name), handler)
 
     """
     Returns command result topic name.
-    For more information about command protocol see rfcs document:
-    https://github.com/kaaproject/kaa-rfcs/blob/master/0011/README.md#result-resource#command-resource
+    
     """
     @staticmethod
     def get_command_response_topic(message: MQTTMessage, command_name):
@@ -80,27 +74,21 @@ class KaaClient(object):
 
     """
     Returns command status topic name.
-    For more information about command protocol see rfcs document:
-    https://github.com/kaaproject/kaa-rfcs/blob/master/0011/README.md
+    
     """
     def _topic_command(self, name):
         return f"kp1/{self.application_version}/cex/{self.token}/command/{name}/status"
 
     """
     Returns configuration status topic name.
-    For more information about configuration management protocol see rfc document:
-    https://github.com/kaaproject/kaa-rfcs/blob/master/0007/README.md
+    
     """
     def _topic_configuration_status(self):
       return f"kp1/{self.application_version}/cmx/{self.token}/config/json/status"
 
     """
     Sends metadata from device.
-    For more information check endpoint metadata protocol rfc:
-    https://github.com/kaaproject/kaa-rfcs/blob/master/0010/README.md
 
-    Metadata covered in getting started guides:
-    https://docs.kaaiot.io/KAA/docs/current/Tutorials/getting-started/
     """
     def publish_metadata(self, payload: dict) -> None:
         result = self.client.publish(topic=self.topic_metadata(), payload=json.dumps(payload))
@@ -108,11 +96,7 @@ class KaaClient(object):
 
     """
     Sends metadata from device.
-    For more information check data collection protocol rfc:
-    https://github.com/kaaproject/kaa-rfcs/blob/master/0002/README.md
-
-    Data collection covered in data collection tutorial:
-    https://docs.kaaiot.io/KAA/docs/current/Tutorials/getting-started/collecting-data-from-a-device/
+    
     """
     def publish_data_collection(self, payload: dict) -> None:
         result = self.client.publish(topic=self._topic_data_collection(), payload=json.dumps(payload))
@@ -132,8 +116,7 @@ class KaaClient(object):
 
     """
     Adds callback to execute when new configuration is sent to the device.
-    For more information about configuration management protocol see rfc document:
-    https://github.com/kaaproject/kaa-rfcs/blob/master/0007/README.md
+    
     """
     def add_configuration_status_handler(self, handler) -> None:
       self.client.message_callback_add(self._topic_configuration_status(), handler)
